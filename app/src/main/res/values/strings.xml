@@ -20,4 +20,8 @@
     <string name="street">ул. Пирогова</string>
     <string name="building_9">д. 9</string>
     <string name="place_on_map">Положение на карте:</string>
+    <string name="gmaps_api_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBfWfqnoC0tIzrZ0zCGNG4nP65J9sIrelA
+    </string>
+    <string name="title_activity_maps">Map</string>
 </resources>

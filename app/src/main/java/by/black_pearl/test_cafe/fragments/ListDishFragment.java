@@ -1,10 +1,9 @@
 package by.black_pearl.test_cafe.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import by.black_pearl.test_cafe.MainActivity;
 import by.black_pearl.test_cafe.R;
 import by.black_pearl.test_cafe.adapters.ListViewAdapter;
 import by.black_pearl.test_cafe.orm_framework.OfferOrm;
@@ -26,6 +26,7 @@ public class ListDishFragment extends Fragment {
     private static String CATEGORY_ID = "categoryid";
 
     private List<OfferOrm> mListOfferOrm;
+    private MainActivity.MainActivityFragmentsCallback mCallback;
 
     public ListDishFragment() { }
 
@@ -52,6 +53,7 @@ public class ListDishFragment extends Fragment {
         }
         int id = getArguments().getInt(CATEGORY_ID);
         this.mListOfferOrm = OfferOrm.find(OfferOrm.class, "category_id = ?", String.valueOf(id));
+        setRetainInstance(true);
     }
 
 
@@ -66,6 +68,18 @@ public class ListDishFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mCallback = ((MainActivity) getActivity()).getFragmentsCallback();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.mCallback = null;
+    }
+
     private AdapterView.OnItemClickListener getOnItemClickListener() {
         return new AdapterView.OnItemClickListener() {
             @Override
@@ -77,22 +91,14 @@ public class ListDishFragment extends Fragment {
                 if(mListOfferOrm.get(position).getDescription() != null) {
                     description = mListOfferOrm.get(position).getDescription();
                 }
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(
-                        R.id.content_main,
-                        DishCardFragment.newInstance(
-                                mListOfferOrm.get(position).getPictureUrl(),
-                                mListOfferOrm.get(position).getName(),
-                                String.valueOf(mListOfferOrm.get(position).getPrice()),
-                                weight,
-                                description
-                        )
+                mCallback.changeFragmentToDishCard(
+                        mListOfferOrm.get(position).getPictureUrl(),
+                        mListOfferOrm.get(position).getName(),
+                        String.valueOf(mListOfferOrm.get(position).getPrice()),
+                        weight,
+                        description
                 );
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
         };
     }
-
 }

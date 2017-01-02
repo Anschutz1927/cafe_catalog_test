@@ -48,20 +48,20 @@ public class GridViewAdapter extends BaseAdapter {
         View view;
         if(convertView == null) {
             view = LayoutInflater.from(this.mContext).inflate(R.layout.view_catalog_category, parent, false);
-            String name = "id" + String.valueOf(this.mListCategory.get(position).getCategoryId());
-            try {
-                int resId = this.mContext.getResources().getIdentifier(name, "drawable", this.mContext.getPackageName());
-                ((ImageView) view.findViewById(R.id.catalog_content_image)).setImageResource(resId);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            ((TextView) view.findViewById(R.id.catalog_content_category_name))
-                    .setText(this.mListCategory.get(position).getCategory());
         }
         else {
             view = convertView;
         }
+        String name = "id" + String.valueOf(this.mListCategory.get(position).getCategoryId());
+        try {
+            int resId = this.mContext.getResources().getIdentifier(name, "drawable", this.mContext.getPackageName());
+            ((ImageView) view.findViewById(R.id.catalog_content_image)).setImageResource(resId);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        ((TextView) view.findViewById(R.id.catalog_content_category_name))
+                .setText(this.mListCategory.get(position).getCategory());
 
         return view;
     }

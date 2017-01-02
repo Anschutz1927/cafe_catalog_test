@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -59,22 +61,32 @@ public class ListViewAdapter extends BaseAdapter {
         if(convertView == null) {
             view = LayoutInflater.from(this.mContext)
                     .inflate(R.layout.view_catalog_list_of_dish, parent, false);
-            ((TextView) view.findViewById(R.id.catalog_list_dish_name))
-                    .setText("Название: " + this.mListOfferOrm.get(position).getName());
-            String weight = OfferOrm
-                    .getParamNameAndParamValueByParamName(mListOfferOrm.get(position).getParams(), ParamOrm.WEIGHT);
-            ((TextView) view.findViewById(R.id.catalog_list_dish_weight))
-                    .setText(weight);
-            ((TextView) view.findViewById(R.id.catalog_list_dish_price))
-                    .setText("Цена: " + String.valueOf(this.mListOfferOrm.get(position).getPrice()));
-            setImageOfDish(
-                    (ImageView) view.findViewById(R.id.catalog_list_dish_image),
-                    this.mListOfferOrm.get(position).getPictureUrl()
-            );
         }
         else {
             view = convertView;
         }
+        ((TextView) view.findViewById(R.id.catalog_list_dish_name))
+                .setText("Название: " + this.mListOfferOrm.get(position).getName());
+        String weight = OfferOrm
+                .getParamNameAndParamValueByParamName(mListOfferOrm.get(position).getParams(), ParamOrm.WEIGHT);
+        ((TextView) view.findViewById(R.id.catalog_list_dish_weight))
+                .setText(weight);
+        ((TextView) view.findViewById(R.id.catalog_list_dish_price))
+                .setText("Цена: " + String.valueOf(this.mListOfferOrm.get(position).getPrice()));
+        //setImageOfDish(
+        //        (ImageView) view.findViewById(R.id.catalog_list_dish_image),
+        //        this.mListOfferOrm.get(position).getPictureUrl()
+        //);
+        String image_url = this.mListOfferOrm.get(position).getPictureUrl();
+        if(image_url == null || image_url.equals("")) {
+            return view;
+        }
+        Picasso.with(mContext)
+                .load(image_url)
+                .placeholder(R.drawable.no_img)
+                .error(R.drawable.no_img)
+   //             .centerInside()
+                .into((ImageView) view.findViewById(R.id.catalog_list_dish_image));
         return view;
     }
 

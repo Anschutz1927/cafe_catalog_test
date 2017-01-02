@@ -1,6 +1,7 @@
 package by.black_pearl.test_cafe.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import by.black_pearl.test_cafe.server_data.DataUpdater;
  */
 public class UpgradeFragment extends Fragment {
 
+    private MainActivity.MainActivityFragmentsCallback mCallback;
+
     public UpgradeFragment() {
     }
 
@@ -35,6 +38,7 @@ public class UpgradeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -52,12 +56,24 @@ public class UpgradeFragment extends Fragment {
         dataUpdater.startDownload();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mCallback = ((MainActivity) getActivity()).getFragmentsCallback();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.mCallback = null;
+    }
+
     private DataUpdater.DataUpdaterInterface getDataUpdaterCallback() {
         return new DataUpdater.DataUpdaterInterface() {
             @Override
             public void onFinishUpdate() {
                 ((MainActivity) getActivity()).setIsUpgrading(false);
-                ((MainActivity) getActivity()).fragmentChanger(MainActivity.SetFragment.CATALOG);
+                mCallback.changeFragmentToCatalog();
             }
         };
     }
