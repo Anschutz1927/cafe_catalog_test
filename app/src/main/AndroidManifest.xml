@@ -20,8 +20,6 @@ package="by.black_pearl.test_cafe">
         </intent-filter>
     </activity>
 
-    <uses-library android:name="com.google.android.maps" />
-
     <meta-data android:name="DATABASE" android:value="appdb.db" />
     <meta-data android:name="VERSION" android:value="1" />
     <meta-data android:name="QUERY_LOG" android:value="true" />
