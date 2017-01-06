@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         if(!this.mIsUpgrading) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                getSupportFragmentManager().popBackStack();
+            }
             switch (item.getItemId()) {
                 case R.id.nav_catalog:
                     fragmentChanger(SetFragment.CATALOG);
@@ -102,9 +105,6 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_contacts:
                     fragmentChanger(SetFragment.CONTACTS);
                     break;
-            }
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-                getSupportFragmentManager().popBackStack();
             }
         }
         else {
