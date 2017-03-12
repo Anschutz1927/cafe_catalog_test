@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         if(!this.mIsUpgrading) {
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+        int n = getSupportFragmentManager().getBackStackEntryCount();
+            for (int i = 0; i < n; i++) {
                 getSupportFragmentManager().popBackStack();
             }
             switch (item.getItemId()) {
